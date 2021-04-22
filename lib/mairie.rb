@@ -1,17 +1,19 @@
 require 'nokogiri'
 require 'open-uri'
 
-@page = Nokogiri::HTML(URI.open("https://www.annuaire-des-mairies.com/95/avernes.html"))
+@nokogiri_doc = Nokogiri::HTML(URI.open("https://www.annuaire-des-mairies.com/val-d-oise.html"))
+
 def townhall_url
 
-annuaire = page.xpath('//*[@class=""]').map do |x|
-  x.text
+  annuaire = @nokogiri_doc.xpath('/html/body/table/tbody/tr[3]/td/table/tbody/tr/td[2]/p[2]/object/table/tbody/tr[2]/td/table/tbody/tr/td[2]/p/a[1]').map do |x|
+    x.text.downcase
+  end
 end
 
-
+puts townhall_url
 def get_townhall_email(townhall_url)
   
-  mail = page.xpath('//section[2]/div/table/tbody/tr[4]/td[2]').map do |i|
+  town_url = @nokogiri_doc.xpath('//section[2]/div/table/tbody/tr[4]/td[2]').map do |i|
     i.text
   end
 end
